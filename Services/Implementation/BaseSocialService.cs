@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Net;
-using Magicalia.MPS.Utilities;
+using SocialConnector.Utils;
 
-namespace Magicalia.MPS.Modules.Site.Services
+namespace SocialConnector.Services
 {
     public abstract class BaseSocialService
     {
         private const string ParamNameUrl = "url";
         private const string ParamNameId = "id";
- 
-        private readonly IMfmWebClient _webClient;
-        
-        protected BaseSocialService(IMfmWebClient webClient)
+
+        private readonly IGenericWebClient _webClient;
+
+        protected BaseSocialService(IGenericWebClient webClient)
         {
             _webClient = webClient;
         }

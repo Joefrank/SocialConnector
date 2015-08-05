@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web.UI.WebControls;
 
-namespace Magicalia.MPS.Utilities
+namespace SocialConnector.Utils
 {
     public class EnumUtility
     {
@@ -55,18 +54,6 @@ namespace Magicalia.MPS.Utilities
 
             return enumValList;
         } 
-
-        public static List<ListItem> EnumToListItemList<T>() where T : struct, IConvertible
-        {
-            List<ListItem> listItems = new List<ListItem>();
-            List<T> enumList = EnumToList<T>();
-
-            foreach (T enumItem in enumList)
-            {
-                listItems.Add(new ListItem(enumItem.ToString(), Convert.ToInt32(enumItem).ToString()));
-            }
-
-            return listItems;
-        }
+      
     }
 }

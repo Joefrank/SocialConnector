@@ -1,16 +1,17 @@
 using System;
 using System.IO;
 using System.Net;
-using Magicalia.MPS.Utilities.Logging;
 using Newtonsoft.Json.Linq;
+using log4net;
+using System.Reflection;
 
-namespace Magicalia.MPS.Utilities
+namespace SocialConnector.Utils
 {
-    public class MfmWebClient : IMfmWebClient
-    {
-        private readonly ILogger<IMfmWebClient> _logger;
+    public class GenericWebClient : IGenericWebClient
+    {       
+        private readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public MfmWebClient(ILogger<IMfmWebClient> logger)
+        public GenericWebClient(ILog logger)
         {
             _logger = logger;
         }

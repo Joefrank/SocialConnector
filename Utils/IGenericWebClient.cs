@@ -1,6 +1,6 @@
-namespace Magicalia.MPS.Utilities
+namespace SocialConnector.Utils
 {
-    public interface IMfmWebClient
+    public interface IGenericWebClient
     {
         ClientResult GetResponse(string url, string authHeader);
     }

@@ -17,7 +17,7 @@ using System.Runtime.Remoting.Messaging;
  */
 
 
-namespace Magicalia.MPS.Utilities
+namespace SocialConnector.Utils
 {
     public delegate void UploadProgressDelegate(object sender, FTPUploadProgressEventArgs e);
 

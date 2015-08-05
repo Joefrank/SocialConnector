@@ -1,14 +1,14 @@
-﻿using Magicalia.MPS.Infrastructure.Settings;
-using Magicalia.MPS.Utilities;
+﻿using SocialConnector.Utils;
+using SocialConnector.Services.Infrastructure;
 
-namespace Magicalia.MPS.Modules.Site.Services
+namespace SocialConnector.Services.Implementation
 {
     public class InstagramService : BaseSocialService, ISocialService
     {
-        public InstagramService(IMfmWebClient webClient, ICustomParameters customParameters)
+        public InstagramService(IGenericWebClient webClient, string endPoint)
             : base(webClient)
         {
-            Endpoint = customParameters.GetCustomParameter("InstagramEmbedUrl");
+            Endpoint = endPoint;
         }
     }
 }
