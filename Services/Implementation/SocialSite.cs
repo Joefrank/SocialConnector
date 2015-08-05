@@ -1,4 +1,4 @@
-﻿namespace Magicalia.MPS.Modules.Site.Services
+﻿namespace SocialConnector.Services.Implementation
 {
     public enum SocialSite
     {

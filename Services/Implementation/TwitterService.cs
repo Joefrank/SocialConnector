@@ -2,11 +2,12 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
-using Magicalia.MPS.Infrastructure.Settings;
-using Magicalia.MPS.Utilities;
-using DateTime = System.DateTime;
+using SocialConnector.Services.Infrastructure;
+using SocialConnector.Utils;
+using System.Collections.Generic;
 
-namespace Magicalia.MPS.Modules.Site.Services
+
+namespace SocialConnector.Services.Implementation
 {
     public class TwitterService : BaseSocialService, ISocialService
     {
@@ -29,14 +30,14 @@ namespace Magicalia.MPS.Modules.Site.Services
         private string _oauthNonce;
         private string _oauthTimestamp;
 
-        public TwitterService(IMfmWebClient webClient, ICustomParameters customParameters)
+        public TwitterService(IGenericWebClient webClient, Dictionary<string,string> customParameters)
             : base(webClient)
         {
-            Endpoint = customParameters.GetCustomParameter("TwitterEmbedUrl");
-            _oauthConsumerKey = customParameters.GetCustomParameter("TwitterConsumerKey");
-            _oauthConsumerSecret = customParameters.GetCustomParameter("TwitterConsumerSecret");
-            _oauthToken = customParameters.GetCustomParameter("TwitterAccessToken");
-            _oauthTokenSecret = customParameters.GetCustomParameter("TwitterAccessTokenSecret");
+            Endpoint = customParameters["TwitterEmbedUrl"];
+            _oauthConsumerKey = customParameters["TwitterConsumerKey"];
+            _oauthConsumerSecret = customParameters["TwitterConsumerSecret"];
+            _oauthToken = customParameters["TwitterAccessToken"];
+            _oauthTokenSecret = customParameters["TwitterAccessTokenSecret"];
         }
 
         public override string GetHtml(string queryStringParamValue)

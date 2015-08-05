@@ -1,8 +1,8 @@
 ﻿using System;
-using Magicalia.MPS.Infrastructure.Settings;
-using Magicalia.MPS.Utilities;
+using SocialConnector.Services.Infrastructure;
+using SocialConnector.Utils;
 
-namespace Magicalia.MPS.Modules.Site.Services
+namespace SocialConnector.Services.Implementation
 {
     public class VineService : BaseSocialService, ISocialService
     {
@@ -14,10 +14,10 @@ namespace Magicalia.MPS.Modules.Site.Services
 
         private const string HeaderFormat = "user-agent=\"{0}\", accept-language=\"{1}\"";
 
-        public VineService(IMfmWebClient webClient, ICustomParameters customParameters)
+        public VineService(IGenericWebClient webClient, string endPoint)
             : base(webClient)
         {
-            Endpoint = customParameters.GetCustomParameter("VineEmbedUrl");
+            Endpoint = endPoint;
             AuthHeader = string.Format(HeaderFormat,
                                        Uri.EscapeDataString(UserAgentHeader),
                                        Uri.EscapeDataString(AcceptLanguageHeader)

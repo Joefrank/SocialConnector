@@ -1,4 +1,4 @@
-﻿namespace Magicalia.MPS.Modules.Site.Services
+﻿namespace SocialConnector.Services.Infrastructure
 {
     public interface ISocialService
     {

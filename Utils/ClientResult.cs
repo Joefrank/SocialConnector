@@ -1,7 +1,7 @@
 using System.Net;
 using Newtonsoft.Json.Linq;
 
-namespace Magicalia.MPS.Utilities
+namespace SocialConnector.Utils
 {
     public class ClientResult
     {
