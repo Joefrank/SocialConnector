@@ -11,9 +11,8 @@ namespace SocialConnector.Utils
     {       
         private readonly ILog _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public GenericWebClient(ILog logger)
+        public GenericWebClient()
         {
-            _logger = logger;
         }
 
         public ClientResult GetResponse(string url, string authHeader)

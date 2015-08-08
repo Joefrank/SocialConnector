@@ -1,0 +1,34 @@
+﻿@model SocialWebsite.Models.SocialStruct
+
+@{
+    ViewBag.Title = "Tweet Display";
+
+    var result = Model.HtmlResult;   
+    
+}
+
+<h2>TweetDisplay</h2>
+
+@if (string.IsNullOrEmpty(result))
+{
+    <div class="error">
+        <p>
+            Sorry but tweet could not be returned!
+        </p>
+        <p>
+            @using (Html.BeginForm("GetTweet", "Twitter", FormMethod.Post))
+            {
+                @:Please enter a valid id to try again 
+                <input type="text" id="txtTweetId" name="txtTweetId" /> @:&nbsp;
+                <input type="submit" value="Get Tweet" />                                                       
+            }
+        </p>
+    </div>
+}
+else{
+    <div class="tweet">    
+        @Html.Raw(Model.HtmlResult)
+    </div>
+}
+
+<input type="button" value="Get Another Tweet" onclick="document.location.href='/Twitter/'" />

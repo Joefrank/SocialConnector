@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+   <p>
+     Welcome!
+    Please Enter tweet url or id in the textbox below to view tweet.<br />
+    </p>
+     @using (Html.BeginForm("GetTweet", "Twitter", FormMethod.Post))
+     {
+                @:Please enter a valid id to try again 
+                <input type="text" id="txtTweetId" name="txtTweetId" /> @:&nbsp;
+                <input type="submit" value="Get Tweet" />                                                       
+     }
+</div>
