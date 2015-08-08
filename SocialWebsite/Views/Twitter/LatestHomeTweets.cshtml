@@ -1,0 +1,40 @@
+﻿@using System.Runtime;
+@using LinqToTwitter;
+
+@model List<LinqToTwitter.Status>
+
+@{
+    ViewBag.Title = "Latest Home Tweets";
+    
+}
+
+<h2>Latest Home Tweets</h2>
+
+<div>
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="field-validation-error">
+            <p>
+                Sorry but tweets could not be retrieved!
+            </p>
+            <p>
+                @using (Html.BeginForm("LatestHomeTweets", "Twitter", FormMethod.Post))
+                {
+                    @:Please enter the number of tweet to return from your home feed. 
+                    @:<input type="text" id="txtTweetCount" name="txtTweetCount" />(Max 200) &nbsp;
+                    <input type="submit" value="Get Tweets" />                                                       
+                }
+            </p>
+        </div>
+    }
+    else{
+        <div class="tweetlist">
+            @foreach(var status in Model){
+                <div class="tweet">    
+                    @Html.Raw(status.Text)
+                </div>
+            }
+        </div>
+    }
+
+</div>

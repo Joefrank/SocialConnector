@@ -5,11 +5,13 @@ using System.Text;
 using SocialConnector.Services.Infrastructure;
 using SocialConnector.Utils;
 using System.Collections.Generic;
-
+using System.Linq;
+using LinqToTwitter;
+using System.Threading.Tasks;
 
 namespace SocialConnector.Services.Implementation
 {
-    public class TwitterService : BaseSocialService, ISocialService
+    public class TwitterService : BaseSocialService, ITwitterService
     {
         private const string OauthVersion = "1.0";
         private const string OauthSignatureMethod = "HMAC-SHA1";
@@ -30,6 +32,8 @@ namespace SocialConnector.Services.Implementation
         private string _oauthNonce;
         private string _oauthTimestamp;
 
+        private SingleUserAuthorizer _authorizer;
+
         public TwitterService(IGenericWebClient webClient, Dictionary<string,string> customParameters)
             : base(webClient)
         {
@@ -38,6 +42,18 @@ namespace SocialConnector.Services.Implementation
             _oauthConsumerSecret = customParameters["TwitterConsumerSecret"];
             _oauthToken = customParameters["TwitterAccessToken"];
             _oauthTokenSecret = customParameters["TwitterAccessTokenSecret"];
+
+            _authorizer =  new SingleUserAuthorizer
+              {
+                 CredentialStore =  new SingleUserInMemoryCredentialStore
+                 {
+                     ConsumerKey = _oauthConsumerKey,
+                     ConsumerSecret = _oauthConsumerSecret,
+                     AccessToken = _oauthToken,
+                     AccessTokenSecret = _oauthTokenSecret
+                 }
+              };
+
         }
 
         public override string GetHtml(string queryStringParamValue)
@@ -133,5 +149,133 @@ namespace SocialConnector.Services.Implementation
                 Uri.EscapeDataString(OauthVersion)
                 );
         }
+
+        /// <summary>
+        /// Should not exceed 200 otherwise, use loop
+        /// </summary>
+        /// <param name="noOfPost"></param>
+        /// <returns></returns>
+        public List<Status> GetMostRecentPostFromHome(int noOfPost)
+        {
+            try
+            {
+                var twitterContext = new TwitterContext(_authorizer);
+
+                var tweets = from tweet in twitterContext.Status
+                             where tweet.Type == StatusType.Home &&
+                             tweet.Count == noOfPost
+                             select tweet;
+
+                return tweets.ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of followers form authorized user
+        /// </summary>
+        /// <param name="noOfFollowers"></param>
+        /// <returns></returns>
+        public List<string> GetFollowers(int noOfFollowers = 50)
+        {
+            var results = new List<string>();
+
+            var twitterContext = new TwitterContext(_authorizer);
+
+            var temp = Enumerable.FirstOrDefault(from friend in
+                                                     twitterContext.Friendship
+                                                 where friend.Type == FriendshipType.FollowersList &&
+                                                    friend.ScreenName == "joe_bolla" &&
+                                                    friend.Count == noOfFollowers
+                                                 select friend);
+
+            if (temp != null)
+            {
+                temp.Users.ToList().ForEach(user => results.Add(user.Name));
+
+                while (temp != null && temp.CursorMovement.Next != 0)
+                {
+                    temp = Enumerable.FirstOrDefault(from friend in
+                                                         twitterContext.Friendship
+                                                     where friend.Type == FriendshipType.FollowersList &&
+                                                        friend.ScreenName == "joe_bolla" &&
+                                                        friend.Count == noOfFollowers &&
+                                                        friend.Cursor == temp.CursorMovement.Next
+                                                     select friend);
+
+                    if (temp != null) temp.Users.ToList().ForEach(user =>
+                       results.Add(user.Name));
+                }
+            }
+
+            return results;
+        }
+
+
+        /// <summary>
+        /// Gets most recent posts and then count tweets and update the list of inputNames provided
+        /// </summary>
+        /// <param name="inputNames"></param>
+        /// <returns></returns>
+        private List<string> GetSideBarList(List<string> inputNames)
+        {
+           var results = new List<string>();
+           var currentTweets = GetMostRecentPostFromHome(200);
+
+           foreach (string name in inputNames)
+           {
+              int tweetCount = currentTweets.Count(tweet =>
+                 tweet.User.Name == name);
+              if(tweetCount > 0)
+              {
+                 results.Add(string.Format("{0} ({1})",
+                    name, tweetCount));
+              }
+              else
+              {
+                 results.Add(string.Format("{0}", name));
+              }
+           }
+ 
+           return results;
+        }
+
+        /// <summary>
+        /// Searches tweeter using a term max statuses returned is 200
+        /// </summary>
+        /// <param name="searchTerm"></param>
+        /// <returns></returns>
+        public List<Status> SearchTwitter(string searchTerm, int noOfRecords)
+        {
+            var twitterContext = new TwitterContext(_authorizer);
+           
+            var srch =
+               Enumerable.SingleOrDefault((from search in
+                                               twitterContext.Search
+                                           where search.Type == SearchType.Search &&
+                                              search.Query == searchTerm &&
+                                              search.Count == noOfRecords
+                                           select search));
+            if (srch != null && srch.Statuses.Count > 0)
+            {
+                return srch.Statuses.ToList();
+            }
+
+            return new List<Status>();
+        }
+
+        public async Task<Status> SendTweet(string tweetText)
+        {
+            using (var twitterCtx = new TwitterContext(_authorizer))
+            {
+                var tweet = await twitterCtx.TweetAsync(tweetText); // error here
+
+                return tweet;
+            }
+        }
+ 
     }
 }

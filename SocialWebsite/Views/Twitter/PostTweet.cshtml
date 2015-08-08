@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "PostTweet";
+}
+
+<h2>PostTweet</h2>
+
+<div>
+     @using (Html.BeginForm("PostTweet", "Twitter", FormMethod.Post))
+            {
+                @:Please enter your tweet to post it 
+                <input type="text" id="txtTweet" name="txtTweet" /> @:&nbsp;
+                <input type="submit" value="Post Tweet" />                                                       
+            }
+</div>

@@ -11,7 +11,7 @@
 
 @if (string.IsNullOrEmpty(result))
 {
-    <div class="error">
+    <div class="field-validation-error">
         <p>
             Sorry but tweet could not be returned!
         </p>
@@ -31,4 +31,4 @@ else{
     </div>
 }
 
-<input type="button" value="Get Another Tweet" onclick="document.location.href='/Twitter/'" />
+<input type="button" value="Get Another Tweet" onclick="document.location.href = '/Twitter/GetTweet/'" />

@@ -36,6 +36,9 @@ namespace SocialConnector.Services
 
         protected string GetParamNameFromValue(string paramValue)
         {
+            if (string.IsNullOrEmpty(paramValue))
+                return "";
+
             if (paramValue.Trim().Contains("http://") || paramValue.Trim().Contains("https://"))
             {
                 return ParamNameUrl;

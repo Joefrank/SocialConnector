@@ -28,10 +28,16 @@ namespace SocialWebsite.Dependencies
             builder.RegisterType<GenericWebClient>().As<IGenericWebClient>();
             builder.RegisterType<InstagramService>().Keyed<ISocialService>(SocialSite.Instagram);
             builder.RegisterType<VineService>().Keyed<ISocialService>(SocialSite.Vine);
-            builder.RegisterType<TwitterService>().Keyed<ISocialService>(SocialSite.Twitter).
-                WithParameter("webClient", new GenericWebClient())
+
+            //builder.RegisterType<TwitterService>().Keyed<ISocialService>(SocialSite.Twitter)
+            //    .WithParameter("webClient", new GenericWebClient())
+            //    .WithParameter("customParameters", twitterDico);
+
+            builder.RegisterType<TwitterService>().As<ITwitterService>()
+                .WithParameter("webClient", new GenericWebClient())
                 .WithParameter("customParameters", twitterDico);
 
+            
             base.Load(builder);
         }
     }

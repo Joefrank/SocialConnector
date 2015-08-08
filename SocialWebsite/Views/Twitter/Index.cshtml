@@ -6,13 +6,20 @@
 
 <div>
    <p>
-     Welcome!
-    Please Enter tweet url or id in the textbox below to view tweet.<br />
+     Welcome to the Twitter API!<br />
+     Please choose one of the following options to start.
+
+   </p>
+
+    <p>
+        <input type="button" value="Get a tweet" onclick="document.location.href = '/Twitter/GetTweet/'" />
     </p>
-     @using (Html.BeginForm("GetTweet", "Twitter", FormMethod.Post))
-     {
-                @:Please enter a valid id to try again 
-                <input type="text" id="txtTweetId" name="txtTweetId" /> @:&nbsp;
-                <input type="submit" value="Get Tweet" />                                                       
-     }
+
+    <p>
+        <input type="button" value="Get latest tweets from home" onclick="document.location.href = '/Twitter/LatestHomeTweets/'" />
+    </p>
+
+     <p>
+        <input type="button" value="Send a tweet" onclick="document.location.href = '/Twitter/PostTweet/'" />
+    </p>
 </div>

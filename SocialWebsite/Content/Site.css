@@ -59,3 +59,15 @@ textarea {
 .validation-summary-valid {
     display: none;
 }
+
+
+.tweetlist {
+    margin:10px auto;
+}
+
+    .tweetlist .tweet {
+        background-color:beige;
+        margin:10px 0;
+        padding:10px;
+        text-align:left;
+    }
